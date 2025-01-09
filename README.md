@@ -1,24 +1,19 @@
-# Terraform Single Web Server
+# Terraform Up and Running
 
-This project sets up a basic web server on AWS using Terraform.
+This repository is for studying and practicing concepts from the book **"Terraform: Up and Running"** by Yevgeniy Brikman.
 
-## Steps
+## Structure
 
-1. **Initialize**:
-   ```bash
-   terraform init
-   ```
+The repository is organized by chapters, with each directory containing examples and code from the respective chapter.
 
-2. **Deploy**:
-   ```bash
-   terraform apply
-   ```
-   Confirm with `yes`.
+## Purpose
 
-3. **Access**:
-   Terraform will output the server's public IP.
+- Learn Terraform concepts through practical examples.
+- Experiment with infrastructure as code using the exercises from the book.
 
-4. **Cleanup**:
-   ```bash
-   terraform destroy
-   ```
+## How to Use
+
+1. Navigate to the chapter directory you want to study.
+2. Review the code and run the examples as described in the book.
+
+
