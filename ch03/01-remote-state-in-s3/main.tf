@@ -1,3 +1,14 @@
+terraform {
+  backend "s3" {
+    bucket = "jdnl-terraform-state"
+    key    = "global/s3/terraform.tfstate"
+    region = "us-east-1"
+
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -38,4 +49,15 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
   ignore_public_acls = true
   // Don't allow bucket to become public
   restrict_public_buckets = true
+}
+
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = "terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
 }
