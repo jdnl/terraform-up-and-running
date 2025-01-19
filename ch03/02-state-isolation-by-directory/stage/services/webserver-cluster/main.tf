@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    key    = "stage/services/webserver-cluster/terraform.tfstate"
+    key = "stage/services/webserver-cluster/terraform.tfstate"
     // Remaining values are filled in by backend.hcl
     // Use `terraform init -backend-config=backend.hcl`
   }
@@ -73,7 +73,9 @@ resource "aws_launch_template" "example" {
 
   user_data = base64encode(<<-EOF
               #!/bin/bash
-              echo "Hello, World" > index.html
+              echo "Hello, World" >> index.html
+              echo "${data.terraform_remote_state.db.outputs.address}" >> index.html
+              echo "${data.terraform_remote_state.db.outputs.port}" >> index.html
               nohup busybox httpd -f -p ${var.server_port} &
               EOF
   )
@@ -142,5 +144,17 @@ data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
+  }
+}
+
+// Access the remote state file of the database
+// Will use the db outputs as the text on web servers
+data "terraform_remote_state" "db" {
+  backend = "s3"
+
+  config = {
+    bucket = "jdnl-terraform-state"
+    key    = "stage/data-stores/mysql/terraform.tfstate"
+    region = "us-east-1"
   }
 }
