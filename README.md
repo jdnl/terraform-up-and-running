@@ -15,5 +15,6 @@ The repository is organized by chapters, with each directory containing examples
 
 1. Navigate to the chapter directory you want to study.
 2. Review the code and run the examples as described in the book.
+3. If you see a _providers.tf file, be sure to run LocalStack `docker run -p 4566:4566 localstack/localstack`.
 
 
