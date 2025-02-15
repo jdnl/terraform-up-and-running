@@ -1,0 +1,38 @@
+# using for_each, if the variable/collection is empty, 0 copies of the resource will be made
+
+# Note: these examples will not run, they are to illustrate concepts
+# I don't believe s3 buckets support dynamic tags
+# If you want to use them, you would probably want to make an ASG
+
+variable "custom_tags" {
+  type = map(string)
+  default = {
+    Environment = "Production"
+    Owner       = "DevOps Team"
+  }
+}
+
+resource "aws_s3_bucket" "logs" {
+  bucket = "jdnl-log-bucket"
+
+  dynamic "tag" {
+    for_each = var.custom_tags
+    content {
+      key   = tag.key
+      value = tag.value
+    }
+  }
+}
+
+# Using Conditionals
+resource "aws_s3_bucket" "logs_conditional" {
+  bucket = "jdnl-log-bucket-conditional"
+
+  dynamic "tag" {
+    for_each = {
+    for key, value in var.custom_tags:
+    key => upper(value)
+    if key != "Name"
+  }
+  }
+}
